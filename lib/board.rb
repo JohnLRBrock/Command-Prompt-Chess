@@ -39,5 +39,33 @@ class Board
     h7: Piece.new(:pawn, :black, :h7)
     }
   end
+  def each(&block)
+    8.downto(1) do |i|
+      ('a'..'h').each do |j| 
+        yield(@board_state[(i.to_s + j).to_sym])
+      end
+    end
+  end
+  def to_s
+    string = ""
+    8.downto(1) do |numeral|
+      string << numeral.to_s + ' '
+      ('a'..'h').each do |alpha|
+        location = "#{alpha + numeral.to_s}".to_sym
+        if @board_hash[location]
+          string << @board_hash[location].to_s
+        else
+          string << '[]'
+        end
+        string << ' '
+      end
+      string << "\n"
+    end
+    string << '  '
+    ('a'..'h').each { |n| string << n.to_s + '  ' }
+    string
+  end
+  def piece_at(location)
+    @board_hash[location]
+  end
 end
-
