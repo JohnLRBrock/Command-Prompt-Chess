@@ -15,4 +15,11 @@ class Chess
     end
     false
   end
+  def player_move
+    while true
+      puts "Where would you like to move?\nUse format 'a1b2'."
+      move = gets.chomp
+      return move if valid_move?(move)
+    end
+  end
 end
