@@ -47,7 +47,7 @@ class Board
     end
   end
   def to_s
-    string = ""
+    string = "\n\n"
     8.downto(1) do |numeral|
       string << numeral.to_s + ' '
       ('a'..'h').each do |alpha|
@@ -55,11 +55,11 @@ class Board
         if @board_hash[location]
           string << @board_hash[location].to_s
         else
-          string << '[]'
+          string << '__'
         end
         string << ' '
       end
-      string << "\n"
+      string << "\n\n"
     end
     string << '  '
     ('a'..'h').each { |n| string << n.to_s + '  ' }

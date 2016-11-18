@@ -27,4 +27,8 @@ class Chess
 end
 
 game = Chess.new
-game.board.to_s
+#while true
+  puts game.board.to_s
+  #move = game.player_move
+  #game.board.move_piece(move)
+#end
