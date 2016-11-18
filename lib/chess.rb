@@ -24,11 +24,14 @@ class Chess
       return move if valid_move?(move)
     end
   end
+  def change_player
+    @player = @player == :white ? :black : :white
+  end
 end
 
-game = Chess.new
+#game = Chess.new
 #while true
-  puts game.board.to_s
-  #move = game.player_move
-  #game.board.move_piece(move)
+#  puts game.board.to_s
+#  move = game.player_move
+#  game.board.move_piece(move)
 #end

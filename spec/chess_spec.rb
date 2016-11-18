@@ -43,4 +43,22 @@ describe Chess do
       end
     end
   end
+  describe "#change_player" do
+    context "white's turn" do
+      game = Chess.new
+      game.player = :white
+      it "changes the player to :black" do
+        game.change_player
+        expect(game.player).to eql(:black)
+      end
+    end
+    context "black's turn" do
+      game = Chess.new
+      game.player = :black
+      it "changes the player to :white" do
+        game.change_player
+        expect(game.player).to eql(:white)
+      end
+    end
+  end
 end
