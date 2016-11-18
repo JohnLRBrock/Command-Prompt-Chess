@@ -2,8 +2,10 @@ require_relative 'piece'
 require_relative 'board'
 
 class Chess
+  attr_accessor :board, :player
   def initialize
     @board = Board.new
+    @player = :white
   end
   def valid_move?(move)
     if move.length == 4
@@ -23,3 +25,6 @@ class Chess
     end
   end
 end
+
+game = Chess.new
+game.board.to_s
