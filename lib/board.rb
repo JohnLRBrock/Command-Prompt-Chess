@@ -98,4 +98,21 @@ class Board
     @board_hash[end_loc].location = end_loc
     @board_hash[end_loc].moved += 1
   end
+
+  def new_loc(location, x, y)
+    location = location.to_s
+    alpha_hash = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    alpha = location.split(//).first
+    alpha_index = alpha_hash.find_index(alpha) + x
+    return false if alpha_index > 7 || alpha_index < 0
+    number = location.split(//).last.to_i + y
+    return false if number > 8 || number < 1
+    location = alpha_hash[alpha_index] + number.to_s
+    location.to_sym
+  end
+    
+  def legal?(move)
+    return false if @board_hash[start_location(move)] == nil
+    true
+  end
 end

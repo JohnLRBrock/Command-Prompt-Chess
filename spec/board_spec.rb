@@ -68,4 +68,56 @@ describe Board do
       end
     end
   end
+  describe "#new_loc" do
+    context ":d4, 2, 2" do
+      it "returns :f6" do
+        expect(@board.new_loc(:d4, 2, 2)).to eql(:f6)
+      end
+    end
+    context ":c3, -1, 5" do
+      it "returns :b8" do
+        expect(@board.new_loc(:c3, -1, 5)).to eql(:b8)
+      end
+    end
+    context ":d4, 5, 1" do
+      it "returns false" do
+        expect(@board.new_loc(:d4, 5, 1)).to eql(false)
+      end
+    end
+    context ":d4, 1, 5" do
+      it "returns false" do
+        expect(@board.new_loc(:d4, 1, 5)).to eql(false)
+      end
+    end
+    context ":d4, -5, 1" do
+      it "returns false" do
+        expect(@board.new_loc(:d4, -5, 1)).to eql(false)
+      end
+    end
+    context ":d4, 1, -5" do
+      it "returns false" do
+        expect(@board.new_loc(:d4, 1, -5)).to eql(false)
+      end
+    end
+  end
+  describe "#legal_pawn_move?" do
+    context "new board" do
+      context "move pawn one" do
+        it "returns true"
+      end
+      context "move pawn two" do
+        it "returns true"
+      end
+    end
+  end
+  describe "#legal?" do
+    context "new board" do
+      context "tries to piece that isn't there" do
+        it "returns false" do
+          expect(@board.legal?('d4a1')).to eql(false)
+        end
+      end
+    end
+    it "returns true if the move is legal"
+  end
 end
