@@ -1,5 +1,6 @@
 class Piece
-  def initialize(type, player, location, moved = false)
+  attr_accessor :type, :player, :location, :moved
+  def initialize(type, player, location, moved = 0)
     @type = type
     @player = player
     @location = location

@@ -65,7 +65,37 @@ class Board
     ('a'..'h').each { |n| string << n.to_s + '  ' }
     string
   end
+
   def piece_at(location)
     @board_hash[location]
+  end
+  def piece_type_at(location)
+    board_hash[location].type
+  end
+  def piece_color_at(location)
+    board_hash[location].player
+  end
+  def piece_location_at(location)
+    board_hash[location].location
+  end
+
+  # returns the first two characters in a move
+  # example: given 'a1b2' returns :a1
+  def start_location(move)
+    move.split(//).first(2).join('').to_sym
+  end
+  # returns the last two characters in a move
+  # example: given 'a1b2' returns :b2
+  def end_location(move)
+    move.split(//).last(2).join('').to_sym
+  end
+
+  def move_piece(move)
+    start_loc = start_location(move)
+    end_loc = end_location(move)
+    @board_hash[end_loc] = @board_hash[start_loc]
+    @board_hash[start_loc] = nil
+    @board_hash[end_loc].location = end_loc
+    @board_hash[end_loc].moved += 1
   end
 end
