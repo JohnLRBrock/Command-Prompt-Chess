@@ -134,7 +134,7 @@ describe Board do
     context ":white" do
       context "new board" do
         it "returns the array ['f2f3', 'f2f4']" do
-          expect(@board.array_of_legal_pawn_moves(:f2)).to eql(['f2f3', 'f2f4'])
+          expect(@board.array_of_legal_pawn_moves(:f2)).to eql(['f2f3', 'f2f4'].sort!)
         end
       end
       context "pawn on diagnals" do
@@ -142,7 +142,7 @@ describe Board do
         board.board_hash[:e3] = Piece.new(:pawn, :black, :e3, 3)
         board.board_hash[:g3] = Piece.new(:pawn, :black, :g3, 3)
         it "returns the array ['f2f3', 'f2f4', 'f2g3', 'f2e3']" do
-          expect(board.array_of_legal_pawn_moves(:f2)).to eql(['f2f3', 'f2f4', 'f2g3', 'f2e3'])
+          expect(board.array_of_legal_pawn_moves(:f2)).to eql(['f2f3', 'f2f4', 'f2g3', 'f2e3'].sort!)
         end
       end
     end
@@ -152,14 +152,14 @@ describe Board do
         board.board_hash[:f5] = Piece.new(:pawn, :white, :f5, 2)
         board.board_hash[:e5] = Piece.new(:pawn, :black, :e5, 1)
         it "returns the array ['f5f6', 'f5e6']" do
-          expect(board.array_of_legal_pawn_moves(:f5)).to eql(['f5f6', 'f5e6'])
+          expect(board.array_of_legal_pawn_moves(:f5)).to eql(['f5f6', 'f5e6'].sort!)
         end
       end
     end
     context ":black" do
       context "new board" do
         it "returns the array ['f7f6', 'f7f5']" do
-          expect(@board.array_of_legal_pawn_moves(:f7)).to eql(['f7f6', 'f7f5'])
+          expect(@board.array_of_legal_pawn_moves(:f7)).to eql(['f7f6', 'f7f5'].sort!)
         end
       end
       context "pawn on diagnals" do
@@ -167,7 +167,7 @@ describe Board do
         board.board_hash[:e6] = Piece.new(:pawn, :white, :e6, 3)
         board.board_hash[:g6] = Piece.new(:pawn, :white, :g6, 3)
         it "returns the array ['f7f6', 'f7f5', 'f7g6', 'f7e6']" do
-          expect(board.array_of_legal_pawn_moves(:f7)).to eql(['f7f6', 'f7f5', 'f7g6', 'f7e6'])
+          expect(board.array_of_legal_pawn_moves(:f7)).to eql(['f7f6', 'f7f5', 'f7g6', 'f7e6'].sort!)
         end
       end
     end
@@ -177,7 +177,7 @@ describe Board do
         board.board_hash[:f4] = Piece.new(:pawn, :black, :f4, 2)
         board.board_hash[:e4] = Piece.new(:pawn, :white, :e4, 1)
         it "returns the array ['f4f3', 'f4e3']" do
-          expect(board.array_of_legal_pawn_moves(:f4)).to eql(['f4f3', 'f4e3'])
+          expect(board.array_of_legal_pawn_moves(:f4)).to eql(['f4f3', 'f4e3'].sort!)
         end
       end
     end
@@ -323,7 +323,21 @@ describe Board do
     end
   end
 
-  describe "#array_of__pawn_moves"
+  describe "#array_of_legal_rook_moves" do
+    context "new board" do
+      it "returns []" do
+        expect(@board.array_of_legal_rook_moves(:a1)).to eql([])
+      end
+    end
+    context "rook at :d4" do
+      board = Board.new
+      board.board_hash[:d4] = Piece.new(:rook, :white, :d4, 5)
+      it "returns ['d4a4', 'd4b4', 'd4c4', 'd4e4', 'd4f4', 'd4g4', 'd4h4', 'd4d3', 'd4d5', 'd4d6', 'd4d7']" do
+        expect(board.array_of_legal_rook_moves(:d4)).to eql(['d4a4', 'd4b4', 'd4c4', 'd4e4', 'd4f4', 'd4g4', 'd4h4', 'd4d3', 'd4d5', 'd4d6', 'd4d7'].sort!)
+      end
+    end
+  end
+
 
   describe "#legal?" do
     context "new board" do
