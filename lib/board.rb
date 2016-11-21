@@ -78,6 +78,14 @@ class Board
   def piece_location_at(location)
     board_hash[location].location
   end
+  def piece_moved?(location)
+    return true if @board_hash[location].moved > 0
+    false    
+  end
+
+  def any_piece?(location)
+    @board_hash[location] ? true : false
+  end
 
   # returns the first two characters in a move
   # example: given 'a1b2' returns :a1
@@ -88,6 +96,9 @@ class Board
   # example: given 'a1b2' returns :b2
   def end_location(move)
     move.split(//).last(2).join('').to_sym
+  end
+  def new_move(start_location, end_location)
+    start_location.to_s + end_location.to_s
   end
 
   def move_piece(move)
@@ -110,9 +121,75 @@ class Board
     location = alpha_hash[alpha_index] + number.to_s
     location.to_sym
   end
-    
+
+# TODO add en passante
+  def array_of_valid_pawn_moves(location)
+    array = []
+    if piece_color_at(location) == :white
+      # if there's no piece directly in from of pawn
+      unless any_piece?(new_loc(location, 0, 1))
+        # allow it to move forward 1 space
+        array << new_move(location, new_loc(location, 0, 1))
+        # if there's no piece two space in front of pawn and it hasn't moved
+        unless any_piece?(new_loc(location, 0, 2)) || piece_moved?(location)
+          # allow pawn to move twice
+          array << new_move(location, new_loc(location, 0, 2))
+        end
+      end
+      # enemy piece on the diagnals?
+      array << new_move(location, new_loc(location, 1, 1)) if any_piece?(new_loc(location, 1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
+      array << new_move(location, new_loc(location, -1, 1)) if any_piece?(new_loc(location, -1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
+      # can you take a piece en passante?
+      if location.to_s.split(//).last.to_i == 5
+        loc = new_loc(location, 1, 0)
+        if any_piece?(loc) && piece_color_at(loc) == :black
+          if @board_hash[loc].moved == 1
+            array << new_move(location, new_loc(location, 1, 1))
+          end
+        end
+        loc = new_loc(location, -1, 0)
+        if any_piece?(loc) && piece_color_at(loc) == :black
+          if @board_hash[loc].moved == 1
+            array << new_move(location, new_loc(location, -1, 1))
+          end
+        end
+      end
+    # if the pawn being moved is black
+    else
+      unless any_piece?(new_loc(location, 0, -1))
+        array << new_move(location, new_loc(location, 0, -1))
+        unless any_piece?(new_loc(location, 0, -2)) || piece_moved?(location)
+          array << new_move(location, new_loc(location, 0, -2))
+        end
+      end
+      array << new_move(location, new_loc(location, 1, -1)) if any_piece?(new_loc(location, 1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
+      array << new_move(location, new_loc(location, -1, -1)) if any_piece?(new_loc(location, -1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
+      if location.to_s.split(//).last.to_i == 4
+        loc = new_loc(location, 1, 0)
+        if any_piece?(loc) && piece_color_at(loc) == :white
+          if @board_hash[loc].moved == 1
+            array << new_move(location, new_loc(location, 1, -1))
+          end
+        end
+        loc = new_loc(location, -1, 0)
+        if any_piece?(loc) && piece_color_at(loc) == :white
+          if @board_hash[loc].moved == 1
+            array << new_move(location, new_loc(location, -1, -1))
+          end
+        end
+      end
+    end
+    array
+  end
+
+  def legal_pawn_move?(move)
+    return array_of_valid_pawn_moves(start_location(move)).include?(move)
+  end
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
+    case piece_type_at(start_location(move))
+    when :pawn then false
+    end
     true
   end
 end
