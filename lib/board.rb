@@ -123,7 +123,7 @@ class Board
   end
 
 # TODO add en passante
-  def array_of_valid_pawn_moves(location)
+  def array_of_legal_pawn_moves(location)
     array = []
     if piece_color_at(location) == :white
       # if there's no piece directly in from of pawn
@@ -183,13 +183,23 @@ class Board
   end
 
   def legal_pawn_move?(move)
-    return array_of_valid_pawn_moves(start_location(move)).include?(move)
+    return array_of_legal_pawn_moves(start_location(move)).include?(move)
   end
+
+  def array_of_legal_rook_moves(loc); end
+
+  def legal_rook_move?(move); end
+
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
     case piece_type_at(start_location(move))
-    when :pawn then false
+    when :pawn then return legal_pawn_move?(move)
+    when :knight then return legal_knight_move?(move)
+    when :rook then return legal_rook_move?(move)
+    when :bishop then return legal_bishop_move?(move)
+    when :queen then return legal_queen_move?(move)
+    when :king then return legal_king_move?(move)
     end
-    true
+    false
   end
 end
