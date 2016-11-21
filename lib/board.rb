@@ -186,87 +186,28 @@ class Board
     return array_of_legal_pawn_moves(start_location(move)).include?(move)
   end
 
-  def array_of_legal_rook_moves(loc)
+  def x_or_y_moves(loc, x, y)
     array = []
     color = piece_color_at(loc)
-    # start by looking up until off the board or we contact a piece
     1.upto(7) do |i|
-      cursor = new_loc(loc, 0, i)
-      # is the location valid?
-      if cursor
-        # is there a piece here?
-        if any_piece?(cursor)
-          # is the piece one of ours?
-          if piece_color_at(cursor) == color
-            # time to stop
-            break
-          # the piece belongs to the enemy. Take it and stop.
-          else
-            array << new_move(loc, cursor)
-            break
-          end
-        # no piece here
-        else
-          array << new_move(loc, cursor)
-        end
+      cursor = new_loc(loc, i * x , i * y)
+      return array unless cursor
+      if any_piece?(cursor)
+        array << new_move(loc, cursor) unless piece_color_at(cursor) == color
+        return array
       else
-        break
+        array << new_move(loc, cursor)
       end
     end
-    # add moves to the right
-    1.upto(7) do |i|
-      cursor = new_loc(loc, i, 0)
-      if cursor
-        if any_piece?(cursor)
-          if piece_color_at(cursor) == color
-            break
-          else
-            array << new_move(loc, cursor)
-            break
-          end
-        else
-          array << new_move(loc, cursor)
-        end
-      else
-        break
-      end
-    end
-    # add moves below piece
-    1.upto(7) do |i|
-      cursor = new_loc(loc, 0, -1 * i)
-      if cursor
-        if any_piece?(cursor)
-          if piece_color_at(cursor) == color
-            break
-          else
-            array << new_move(loc, cursor)
-            break
-          end
-        else 
-          array << new_move(loc, cursor)
-        end
-      else
-        break
-      end
-    end
-    1.upto(7) do |i|
-      cursor = new_loc(loc, -1 * i, 0)
-      if cursor
-        if any_piece?(cursor)
-          if piece_color_at(cursor) == color
-            break
-          else
-            array << new_move(loc, cursor)
-            break
-          end
-        else
-          array << new_move(loc, cursor)
-        end
-      else
-        break
-      end
-    end
-    array.sort!
+  end
+
+  def array_of_legal_rook_moves(loc)
+    array = []
+    array << x_or_y_moves(loc, 1, 0)
+    array << x_or_y_moves(loc, 0, 1)
+    array << x_or_y_moves(loc, -1, 0)
+    array << x_or_y_moves(loc, 0, -1)
+    array.flatten!.sort!
   end
 
   def legal_rook_move?(move); end
