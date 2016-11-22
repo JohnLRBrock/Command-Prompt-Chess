@@ -338,6 +338,41 @@ describe Board do
     end
   end
 
+  describe "#legal_rook_move?" do
+    context ":white" do
+      context ":f4" do
+        board = Board.new
+        board.board_hash[:f4] = Piece.new(:rook, :white, :f4, 5)
+        it "returns true for f4d4" do
+          expect(board.legal_rook_move?('f4d4')).to eql(true)
+        end
+        it "returns false f4e5" do
+          expect(board.legal_rook_move?('f4e5')).to eql(false)
+        end
+        it "returns true for f4f7" do
+          expect(board.legal_rook_move?('f4f7')).to eql(true)
+        end
+        it "returns false for f4f2" do
+          expect(board.legal_rook_move?('f4f2')).to eql(false)
+        end
+      end
+    end
+    context ":black" do
+      context ":c4" do
+        board = Board.new
+        board.board_hash[:c4] = Piece.new(:rook, :black, :c4, 5)
+        it "returns true for c4c2" do
+          expect(board.legal_rook_move?('c4c2')).to eql(true)
+        end
+        it "returns false for c4c7" do
+          expect(board.legal_rook_move?('c4c7')).to eql(false)
+        end
+      end
+    end
+  end
+
+
+
 
   describe "#legal?" do
     context "new board" do

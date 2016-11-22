@@ -210,7 +210,9 @@ class Board
     array.flatten!.sort!
   end
 
-  def legal_rook_move?(move); end
+  def legal_rook_move?(move)
+    array_of_legal_rook_moves(start_location(move)).include?(move)
+  end
 
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
