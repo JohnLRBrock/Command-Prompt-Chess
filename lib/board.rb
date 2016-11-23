@@ -201,6 +201,38 @@ class Board
     end
   end
 
+  def knight_move(loc, x, y)
+    color = piece_color_at(loc)
+    return false unless new_loc(loc, x, y)
+    spot = new_loc(loc, x, y)
+    if any_piece?(spot)
+      if piece_color_at(spot) != color
+        return new_move(loc, spot)
+      else
+        return false
+      end
+    else
+      return new_move(loc, spot)
+    end
+  end
+
+  def array_of_legal_knight_moves(loc)
+    array = []
+    array << knight_move(loc, 1, 2) if knight_move(loc, 1, 2)
+    array << knight_move(loc, 1, -2) if knight_move(loc, 1, -2)
+    array << knight_move(loc, -1, 2) if knight_move(loc, -1, 2)
+    array << knight_move(loc, -1, -2) if knight_move(loc, -1, -2)
+    array << knight_move(loc, 2, 1) if knight_move(loc, 2, 1)
+    array << knight_move(loc, 2, -1) if knight_move(loc, 2, -1)
+    array << knight_move(loc, -2, 1) if knight_move(loc, -2, 1)
+    array << knight_move(loc, -2, -1) if knight_move(loc, -2, -1)
+    array.sort!
+  end
+
+  def legal_knight_move?(move)
+    array_of_legal_knight_moves(start_location(move)).include?(move)
+  end
+
   def array_of_legal_rook_moves(loc)
     array = []
     array << x_or_y_moves(loc, 1, 0)
