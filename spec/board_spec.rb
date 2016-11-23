@@ -390,6 +390,44 @@ describe Board do
     end
   end
 
+  describe "#legal_knight_move?" do
+    context ":white knight to open space" do
+      it "returns true" do
+        expect(@board.legal_knight_move?('b1a3')).to eql(true)
+      end
+    end
+    context ":white knight to black piece" do
+      board = Board.new
+      board.board_hash[:e5] = Piece.new(:knight, :white, :e5, 5)
+      it "returns true" do
+        expect(board.legal_knight_move?('e5f7')).to eql(true)
+      end
+    end
+    context ":white knight to white piece" do
+      it "returns false" do
+        expect(@board.legal_knight_move?('b1d2')).to eql(false)
+      end
+    end
+    context ":black knight to open space" do
+      it "returns true" do
+        expect(@board.legal_knight_move?('b8a6')).to eql(true)
+      end
+    end
+    context ":black knight to white piece" do
+      board = Board.new
+      board.board_hash[:e4] = Piece.new(:knight, :black, :e4, 15)
+      it "returns true" do
+        expect(board.legal_knight_move?('e4f2')).to eql(true)
+      end
+    end
+    context ":black knight to black piece" do
+      it "returns false" do
+        expect(@board.legal_knight_move?('b8d7')).to eql(false)
+      end
+    end
+  end
+
+
   describe "#legal_rook_move?" do
     context "white knight takes black pawn" do
       board = Board.new
