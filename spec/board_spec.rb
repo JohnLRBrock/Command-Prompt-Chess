@@ -371,6 +371,8 @@ describe Board do
     end
   end
 
+
+
   describe "#array_of_legal_knight_moves" do
     context "new board" do
       context ":white" do
@@ -426,29 +428,6 @@ describe Board do
       end
     end
   end
-
-
-  describe "#legal_rook_move?" do
-    context "white knight takes black pawn" do
-      board = Board.new
-      board.board_hash[:a1] = Piece.new(:knight, :white, :a1, 20)
-      board.board_hash[:c2] = Piece.new(:pawn, :black, :c2, 5)
-      it "returns true" do
-        expect(board.legal_knight_move?('a1c2')).to eql(true)
-      end
-    end
-    context "black knight moves over own pawn" do
-      it "returns true" do
-        expect(@board.legal_knight_move?('b8c6')).to eql(true)
-      end
-    end
-    context "black knight moves onto own piece" do
-      it "returns false" do
-        expect(@board.legal_knight_move?('b8d7')).to eql(false)
-      end
-    end
-  end
-
 
   describe "#legal?" do
     context "new board" do
