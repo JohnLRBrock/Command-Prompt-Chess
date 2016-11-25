@@ -371,8 +371,6 @@ describe Board do
     end
   end
 
-
-
   describe "#array_of_legal_knight_moves" do
     context "new board" do
       context ":white" do
@@ -428,6 +426,164 @@ describe Board do
       end
     end
   end
+
+  describe "#array_of_legal_queen_moves" do
+    context "queen has no moves" do
+      it "returns []" do
+        expect(@board.array_of_legal_queen_moves(:d1)).to eql([])
+      end
+    end
+    context "white queen at e4" do
+      board = Board.new
+      board.board_hash[:e4] = Piece.new(:queen, :white, :e4, 42)
+      it "returns ['e4a4', 'e4b4', 'e4c4', 'e4d4', 'e4f4', 'e4g4', 'e4h4', 'e4e3', 'e4e5', 'e4e6', 'e4e7', 'e4b7', 'e4c6', 'e4d5', 'e4f3', 'e4d3', 'e4f5', 'e4g6', 'e4h7']" do
+        expect(board.array_of_legal_queen_moves(:e4)).to eql(['e4a4', 'e4b4', 'e4c4', 'e4d4', 'e4f4', 'e4g4', 'e4h4', 'e4e3', 'e4e5', 'e4e6', 'e4e7', 'e4b7', 'e4c6', 'e4d5', 'e4f3', 'e4d3', 'e4f5', 'e4g6', 'e4h7'].sort!)
+      end
+    end
+    context "black queen at e4" do
+      board = Board.new
+      board.board_hash[:e4] = Piece.new(:queen, :black, :e4, 43)
+      it "returns ['e4a4', 'e4b4', 'e4c4', 'e4d4', 'e4f4', 'e4g4', 'e4h4', 'e4e3', 'e4e5', 'e4e6', 'e4e2', 'e4c2', 'e4c6', 'e4d5', 'e4f3', 'e4d3', 'e4f5', 'e4g6', 'e4g2']" do
+        expect(board.array_of_legal_queen_moves(:e4)).to eql(['e4a4', 'e4b4', 'e4c4', 'e4d4', 'e4f4', 'e4g4', 'e4h4', 'e4e3', 'e4e5', 'e4e6', 'e4e2', 'e4c2', 'e4c6', 'e4d5', 'e4f3', 'e4d3', 'e4f5', 'e4g6', 'e4g2'].sort!)
+      end
+    end
+  end
+  describe "#legal_queen_move?" do
+    context "white queen" do
+      context "queen has no moves" do
+        it "returns false" do
+          expect(@board.legal_queen_move?('d1e1')).to eql(false)
+        end
+      end
+      context "tries to take black piece" do
+        board = Board.new
+        board.board_hash[:d2] = Piece.new(:queen, :black, :d2, 0)
+        it "returns false" do
+          expect(board.legal_queen_move?('d1d2')).to eql(true)
+        end
+      end
+      context "tries to jump piece" do
+        board = Board.new
+        board.board_hash[:d1] = Piece.new(:queen, :black, :d1, 0)
+        it "returns false" do
+          expect(board.legal_queen_move?('d1d3')).to eql(false)
+        end
+      end
+      context "tries to take own piece"
+    end
+    context "black queen" do
+      context "queen has no moves" do
+        it "returns false" do
+          expect(@board.legal_queen_move?('d8a5')).to eql(false)
+        end
+      end
+      context "tries to take white piece" do
+        it "returns true" do
+          board = Board.new
+          board.board_hash[:d1] = Piece.new(:queen, :black, :d1, 5)
+          expect(board.legal_queen_move?('d1d2')).to eql(true)
+        end
+      end
+      context "tries to jump piece" do
+        it "returns false" do
+          expect(@board.legal_queen_move?('d8d6')).to eql(false)
+        end
+      end
+      context "tries to take own piece" do
+        it "returns false" do
+          expect(@board.legal_queen_move?('d8e8')).to eql(false)
+        end
+      end
+    end
+  end
+
+  describe "#array_of_legal_bishop_moves" do
+    context "white" do
+      context "no moves" do
+        it "returns []" do
+          expect(@board.array_of_legal_bishop_moves(:c1)).to eql([])
+        end
+      end
+      context ":f4" do
+        board = Board.new
+        board.board_hash[:f4] = Piece.new(:bishop, :white, :f4, 5)
+        it "returns ['f4c7', 'f4d6', 'f4e5', 'f4g3', 'f4e3', 'f4g5', 'f4h6']" do
+          expect(board.array_of_legal_bishop_moves(:f4)).to eql(['f4c7', 'f4d6', 'f4e5', 'f4g3', 'f4e3', 'f4g5', 'f4h6'].sort!)
+        end
+      end
+    end
+    context "black" do
+      context "no moves" do
+        it "returns []" do
+          expect(@board.array_of_legal_bishop_moves(:c8)).to eql([])
+        end
+      end
+      context ":e4" do
+        board = Board.new
+        board.board_hash[:e4] = Piece.new(:bishop, :black, :e4, 5)
+        it "returns ['e4c2', 'e4d3', 'e4f5', 'e4g6', 'e4h7', 'e4f3', 'e4d5', 'e4c6']" do
+          expect(board.array_of_legal_bishop_moves(:e4)).to eql(['e4c2', 'e4d3', 'e4f5', 'e4g6', 'e4g2', 'e4f3', 'e4d5', 'e4c6'].sort!)
+        end
+      end
+    end
+  end
+
+  describe "#legal_bishop_move?" do
+    context "new board" do
+      context "c1e4" do
+        it "returns false" do
+          expect(@board.legal_bishop_move?('c1e4')).to eql(false)
+        end
+      end
+      context "c1d2" do
+        it "returns false" do
+          expect(@board.legal_bishop_move?('c1d2')).to eql(false)
+        end
+      end
+    end
+    context "black bishop take white pawn" do
+      board = Board.new
+      board.board_hash[:f4] = Piece.new(:bishop, :black, :f4, 2)
+      it "returns true" do
+        expect(board.legal_bishop_move?('f4d2')).to eql(true)
+      end
+    end
+    context "move horizontally" do
+      board = Board.new
+      board.board_hash[:f4] = Piece.new(:bishop, :black, :f4, 2)
+      it "returns false" do
+        expect(board.legal_bishop_move?('f4e4')).to eql(false)
+      end
+    end
+  end
+
+  describe "#array_of_legal_king_moves" do
+    context "no moves" do
+      it "returns []" do
+        expect(@board.array_of_legal_king_moves(:e1)).to eql([])
+      end
+    end
+    context "white" do
+      context "d6" do
+        board = Board.new
+        board.board_hash[:d6] = Piece.new(:king, :white, :d5, 5)
+        it "returns ['d6c7', 'd6d4', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7']" do
+          expect(board.array_of_legal_king_moves(:d6)).to eql(['d6c7', 'd6d4', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7'].sort!)
+        end
+      end
+      context "black" do
+        context "a6" do
+          board = Board.new
+          board.board_hash[:a6] = Piece.new(:king, :black, :a6, 5)
+          it "returns ['a6a5', 'a6b5', 'a6b6']" do
+            expect(board.array_of_legal_king_moves).to eql(['a6a5', 'a6b5', 'a6b6'].sort!)
+          end
+        end
+      end
+    end
+  end
+
+
 
   describe "#legal?" do
     context "new board" do

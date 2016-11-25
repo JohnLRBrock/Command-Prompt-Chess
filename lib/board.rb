@@ -233,6 +233,36 @@ class Board
     array_of_legal_knight_moves(start_location(move)).include?(move)
   end
 
+  def array_of_legal_queen_moves(loc)
+    array = []
+    array << x_or_y_moves(loc, 1, 1)
+    array << x_or_y_moves(loc, 1, -1)
+    array << x_or_y_moves(loc, -1, 1)
+    array << x_or_y_moves(loc, -1, -1)
+    array << x_or_y_moves(loc, 1, 0)
+    array << x_or_y_moves(loc, 0, 1)
+    array << x_or_y_moves(loc, -1, 0)
+    array << x_or_y_moves(loc, 0, -1)
+    array.flatten!.sort!
+  end
+
+  def legal_queen_move?(move)
+    array_of_legal_queen_moves(start_location(move)).include?(move)
+  end
+
+  def array_of_legal_bishop_moves(loc)
+    array = []
+    array << x_or_y_moves(loc, 1, 1)
+    array << x_or_y_moves(loc, 1, -1)
+    array << x_or_y_moves(loc, -1, 1)
+    array << x_or_y_moves(loc, -1, -1)
+    array.flatten!.sort!
+  end
+
+  def legal_bishop_move?(move)
+    array_of_legal_bishop_moves(start_location(move)).include?(move)
+  end
+
   def array_of_legal_rook_moves(loc)
     array = []
     array << x_or_y_moves(loc, 1, 0)
