@@ -42,7 +42,7 @@ class Board
   def each(&block)
     8.downto(1) do |i|
       ('a'..'h').each do |j| 
-        yield(@board_state[(i.to_s + j).to_sym])
+        yield(@board_hash[(i.to_s + j).to_sym])
       end
     end
   end
@@ -284,10 +284,6 @@ class Board
     end
   end
 
-  def legal_king_move?(move)
-    array_of_legal_king_moves(start_location(move)).include?(move)
-  end
-
   def array_of_legal_king_moves(loc)
     array = []
     color = piece_color_at(loc)
@@ -310,6 +306,10 @@ class Board
     array = array.flatten.sort
   end
 
+  def legal_king_move?(move)
+    array_of_legal_king_moves(start_location(move)).include?(move)
+  end
+
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
     return false if start_location(move) == end_location(move)
@@ -324,5 +324,26 @@ class Board
     false
   end
 
-  def in_check?(player); end
+  def array_of_all_moves_for(player)
+    array = []
+    each do |piece|
+      if piece && piece.player == player
+        case piece.type
+        when :pawn then array << array_of_legal_pawn_moves(piece.location)
+        when :knight then array << array_of_legal_knight_moves(piece.location)
+        when :rook then array << array_of_legal_rook_moves(piece.location)
+        when :bishop then array << array_of_legal_bishop_moves(piece.location)
+        when :queen then array << array_of_legal_queen_moves(piece.location)
+        when :king then array << array_of_legal_king_moves(piece.location)
+        else
+          puts "didn't recognize a piece type in #array_of_all_moves_for"
+        end
+      end
+    end
+    array = array.flatten.sort
+  end
+
+  def check?(player)
+    false
+  end
 end

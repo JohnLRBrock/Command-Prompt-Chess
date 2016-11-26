@@ -638,4 +638,32 @@ describe Board do
       end
     end
   end
+
+  describe "#check?" do
+    context "new board" do
+      context "white" do
+        it "returns false" do
+          expect(@board.check?(:white)).to eql(false)
+        end
+      end
+      context ":black" do
+        it "returns false" do
+          expect(@board.check?(:black)).to eql(false)
+        end
+      end
+    end
+    context "white in check" do
+      board = Board.new
+      board.board_hash = Hash.new
+    end
+  end
+
+  describe "#array_of_all_moves_for" do
+    context "new board" do
+      context "white" do
+        board = Board.new
+        p board.array_of_all_moves_for(:white)
+      end
+    end
+  end
 end
