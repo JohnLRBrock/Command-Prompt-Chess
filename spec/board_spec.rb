@@ -567,8 +567,8 @@ describe Board do
       context "d6" do
         board = Board.new
         board.board_hash[:d6] = Piece.new(:king, :white, :d5, 5)
-        it "returns ['d6c7', 'd6d4', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7']" do
-          expect(board.array_of_legal_king_moves(:d6)).to eql(['d6c7', 'd6d4', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7'].sort!)
+        it "returns ['d6c7', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7']" do
+          expect(board.array_of_legal_king_moves(:d6)).to eql(['d6c7', 'd6e7', 'd6c6', 'd6c5', 'd6d5', 'd6e5', 'd6e6', 'd6d7'].sort!)
         end
       end
       context "black" do
@@ -576,14 +576,53 @@ describe Board do
           board = Board.new
           board.board_hash[:a6] = Piece.new(:king, :black, :a6, 5)
           it "returns ['a6a5', 'a6b5', 'a6b6']" do
-            expect(board.array_of_legal_king_moves).to eql(['a6a5', 'a6b5', 'a6b6'].sort!)
+            expect(board.array_of_legal_king_moves(:a6)).to eql(['a6a5', 'a6b5', 'a6b6'].sort!)
           end
         end
       end
     end
   end
 
-
+  describe "#legal_king_move?" do
+    context "white" do
+      context "no move" do
+        it "returns false" do
+          expect(@board.legal_king_move?('e1h8')).to eql(false)
+        end
+      end
+      context "take a black piece" do
+        board = Board.new
+        board.board_hash[:h6] = Piece.new(:king, :white, :h6, 4)
+        it "returns true" do
+          expect(board.legal_king_move?('h6h7')).to eql(true)
+        end
+      end
+      context "take white piece" do
+        it "returns false" do
+          expect(@board.legal_king_move?('e1d1')).to eql(false)
+        end
+      end
+    end
+    context "black" do
+      context "no move" do
+        it "returns false" do
+          expect(@board.legal_king_move?('e8a1')).to eql(false)
+        end
+      end
+      context "take white piece" do
+        board = Board.new
+        board.board_hash[:e3] = Piece.new(:king, :black, :e3, 5)
+        it "returns true" do
+          expect(board.legal_king_move?('e3e2')).to eql(true)
+        end
+      end
+      context "take black piece" do
+        it "returns false" do
+          expect(@board.legal_king_move?('e8f8')).to eql(false)
+        end
+      end
+    end
+  end
 
   describe "#legal?" do
     context "new board" do
@@ -593,6 +632,10 @@ describe Board do
         end
       end
     end
-    it "returns true if the move is legal"
+    context "various legal moves" do
+      it "returns true if the move is legal" do
+        expect(@board.legal?('h2h4')).to eql(true)
+      end
+    end
   end
 end

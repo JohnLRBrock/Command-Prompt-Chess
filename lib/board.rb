@@ -276,8 +276,43 @@ class Board
     array_of_legal_rook_moves(start_location(move)).include?(move)
   end
 
+  def king_move(loc, x, y, color)
+    if spot = new_loc(loc, x, y)
+      return new_move(loc, spot) unless any_piece?(spot) && piece_color_at(spot) == color
+    else
+      nil
+    end
+  end
+
+  def legal_king_move?(move)
+    array_of_legal_king_moves(start_location(move)).include?(move)
+  end
+
+  def array_of_legal_king_moves(loc)
+    array = []
+    color = piece_color_at(loc)
+    move = king_move(loc, -1, 1, color)
+    array << move if move
+    move = king_move(loc, 0, 1, color)
+    array << move if move
+    move = king_move(loc, 1, 1, color)
+    array << move if move
+    move = king_move(loc, -1, 0, color)
+    array << move if move
+    move = king_move(loc, 1, 0, color)
+    array << move if move
+    move = king_move(loc, -1, -1, color)
+    array << move if move
+    move = king_move(loc, 0, -1, color)
+    array << move if move
+    move = king_move(loc, 1, -1, color)
+    array << move if move
+    array = array.flatten.sort
+  end
+
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
+    return false if start_location(move) == end_location(move)
     case piece_type_at(start_location(move))
     when :pawn then return legal_pawn_move?(move)
     when :knight then return legal_knight_move?(move)
@@ -288,4 +323,6 @@ class Board
     end
     false
   end
+
+  def in_check?(player); end
 end
