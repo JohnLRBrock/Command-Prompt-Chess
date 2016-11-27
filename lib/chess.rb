@@ -21,13 +21,19 @@ class Chess
     puts "Where would you like to move?\nUse format 'a1b2'."
     loop do
       move = gets.chomp
-      valid = valid_move?(move)
-      puts "That's not a valid move." unless valid
-      legal = @board.legal?(move)
-      puts "That's not a legal move." unless legal
-      owned_piece = @board.piece_color_at(@board.start_location(move)) == player
-      puts "That's not your peice to move." unless owned_piece
-      return move if valid && legal && owned_piece
+      unless valid_move?(move)
+        puts "That's not a valid move."
+        redo
+      end
+      unless @board.legal?(move)
+        puts "That's not a legal move."
+        redo
+      end
+      unless @board.piece_color_at(@board.start_location(move)) == player
+        puts "That's not your peice to move."
+        redo
+      end
+      return move
     end
   end
   def change_player
