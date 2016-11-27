@@ -18,30 +18,34 @@ class Chess
     false
   end
   def player_move
+    puts "Where would you like to move?\nUse format 'a1b2'."
     loop do
-      puts "Where would you like to move?\nUse format 'a1b2'."
       move = gets.chomp
-      return move if valid_move?(move)
+      legal = @board.legal?(move)
+      puts "That's not a legal move." unless legal
+      owned_piece = @board.piece_color_at(@board.start_location(move)) == player
+      puts "That's not your peice to move." unless owned_piece
+      return move if valid_move?(move) && legal && owned piece
     end
   end
   def change_player
     @player = @player == :white ? :black : :white
   end
-
-  def init_game
-    game = Chess.new
-    loop do
-      puts game.board.to_s
-      if game.board.mate?(game.mate?(player))
-        puts "#{game.player} is in checkmate!"
-        game.change_player
-        puts "#{game.player} Wins!"
-        break
-      end
-      puts "#{game.player} is in check." if game.board.check?(game.player)
-      move = game.player_move
-      game.board.move_piece(move) if game.board.legal?(move)
+end
+def init_game
+  game = Chess.new
+  loop do
+    puts game.board.to_s
+    if game.board.mate?(game.player)
+      puts "#{game.player} is in checkmate!"
       game.change_player
+      puts "#{game.player} Wins!"
+      break
     end
+    puts "#{game.player} is in check." if game.board.check?(game.player)
+    game.board.move_piece(game.player_move)
+    game.change_player
   end
 end
+
+init_game
