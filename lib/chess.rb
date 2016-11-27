@@ -18,7 +18,7 @@ class Chess
     false
   end
   def player_move
-    loop
+    loop do
       puts "Where would you like to move?\nUse format 'a1b2'."
       move = gets.chomp
       return move if valid_move?(move)
@@ -27,21 +27,21 @@ class Chess
   def change_player
     @player = @player == :white ? :black : :white
   end
-end
 
-def init_game
-  game = Chess.new
-  loop
-    puts game.board.to_s
-    if game.board.mate?(game.mate?(player))
-      puts "#{game.player} is in checkmate!"
+  def init_game
+    game = Chess.new
+    loop do
+      puts game.board.to_s
+      if game.board.mate?(game.mate?(player))
+        puts "#{game.player} is in checkmate!"
+        game.change_player
+        puts "#{game.player} Wins!"
+        break
+      end
+      puts "#{game.player} is in check." if game.board.check?(game.player)
+      move = game.player_move
+      game.board.move_piece(move) if game.board.legal?(move)
       game.change_player
-      puts "#{game.player} Wins!"
-      break
     end
-    puts "#{game.player} is in check." if game.board.check?(game.player)
-    move = game.player_move
-    game.board.move_piece(move) if game.board.legal?(move)
-    game.change_player
   end
 end
