@@ -70,13 +70,16 @@ class Board
     @board_hash[location]
   end
   def piece_type_at(location)
-    board_hash[location].type
+    return board_hash[location].type if board_hash[location]
+    nil
   end
   def piece_color_at(location)
-    board_hash[location].player
+    return board_hash[location].player if board_hash[location]
+    nil
   end
   def piece_location_at(location)
-    board_hash[location].location
+    return board_hash[location].location if board_hash[location]
+    nil
   end
   def piece_moved?(location)
     return true if @board_hash[location].moved > 0
