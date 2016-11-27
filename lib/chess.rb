@@ -32,6 +32,14 @@ end
 game = Chess.new
 loop
   puts game.board.to_s
+  if game.board.mate?(game.mate?(player))
+    puts "#{game.player} is in checkmate!"
+    game.change_player
+    puts "#{game.player} Wins!"
+    break
+  end
+  puts "#{game.player} is in check." if game.board.check?(game.player)
   move = game.player_move
-  game.board.move_piece(move)
+  game.board.move_piece(move) if game.board.legal?(move)
+  game.change_player
 end

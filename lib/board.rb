@@ -346,4 +346,8 @@ class Board
   def check?(player)
     false
   end
+
+  def mate?(player)
+    false
+  end
 end
