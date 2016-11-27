@@ -27,7 +27,7 @@ class Chess
       puts "That's not a legal move." unless legal
       owned_piece = @board.piece_color_at(@board.start_location(move)) == player
       puts "That's not your peice to move." unless owned_piece
-      return move if valid && legal && owned piece
+      return move if valid && legal && owned_piece
     end
   end
   def change_player
