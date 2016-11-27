@@ -18,7 +18,7 @@ class Chess
     false
   end
   def player_move
-    while true
+    loop
       puts "Where would you like to move?\nUse format 'a1b2'."
       move = gets.chomp
       return move if valid_move?(move)
@@ -29,9 +29,9 @@ class Chess
   end
 end
 
-#game = Chess.new
-#while true
-#  puts game.board.to_s
-#  move = game.player_move
-#  game.board.move_piece(move)
-#end
+game = Chess.new
+loop
+  puts game.board.to_s
+  move = game.player_move
+  game.board.move_piece(move)
+end
