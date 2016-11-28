@@ -112,6 +112,7 @@ class Board
     @board_hash[start_loc] = nil
     @board_hash[end_loc].location = end_loc
     @board_hash[end_loc].moved += 1
+    @board_hash[end_loc].last_moved_on = @turn
   end
 
   def new_loc(location, x, y)
