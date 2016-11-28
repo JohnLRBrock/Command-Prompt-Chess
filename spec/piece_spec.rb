@@ -16,4 +16,7 @@ describe Piece do
   it "responds to #moved" do
     expect(@piece).to respond_to(:moved)
   end
+  it "responds to #last_moved_on" do
+    expect(@piece).to respond_to(:last_moved_on)
+  end
 end

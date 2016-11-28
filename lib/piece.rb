@@ -1,10 +1,11 @@
 class Piece
-  attr_accessor :type, :player, :location, :moved
-  def initialize(type, player, location, moved = 0)
+  attr_accessor :type, :player, :location, :moved, :last_moved_on
+  def initialize(type, player, location, moved = 0, last_moved_on = 0)
     @type = type
     @player = player
     @location = location
     @moved = moved
+    @last_moved_on = last_moved_on
   end
   def to_s
     case @type
