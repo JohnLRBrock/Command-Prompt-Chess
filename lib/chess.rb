@@ -20,7 +20,7 @@ class Chess
   def player_move
     puts "Where would you like to move?\nUse format 'a1b2'."
     loop do
-      move = gets.chomp
+      move = STDIN.gets.chomp
       unless valid_move?(move)
         puts "That's not a valid move."
         redo
@@ -51,9 +51,14 @@ def init_game
       break
     end
     puts "#{game.player} is in check." if game.board.check?(game.player)
-    game.board.move_piece(game.player_move)
+    move = game.player_move
+    if en_passant(move)
+      game.board.move_en_passant(move)
+    else
+      game.board.move_piece(game.player_move)
+    end
     game.change_player
   end
 end
 
-init_game
+#init_game

@@ -142,21 +142,6 @@ class Board
       # enemy piece on the diagnals?
       array << new_move(location, new_loc(location, 1, 1)) if any_piece?(new_loc(location, 1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
       array << new_move(location, new_loc(location, -1, 1)) if any_piece?(new_loc(location, -1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
-      # can you take a piece en passante?
-      if location.to_s.split(//).last.to_i == 5
-        loc = new_loc(location, 1, 0)
-        if any_piece?(loc) && piece_color_at(loc) == :black
-          if @board_hash[loc].moved == 1
-            array << new_move(location, new_loc(location, 1, 1))
-          end
-        end
-        loc = new_loc(location, -1, 0)
-        if any_piece?(loc) && piece_color_at(loc) == :black
-          if @board_hash[loc].moved == 1
-            array << new_move(location, new_loc(location, -1, 1))
-          end
-        end
-      end
     # if the pawn being moved is black
     else
       unless any_piece?(new_loc(location, 0, -1))
@@ -167,20 +152,6 @@ class Board
       end
       array << new_move(location, new_loc(location, 1, -1)) if any_piece?(new_loc(location, 1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
       array << new_move(location, new_loc(location, -1, -1)) if any_piece?(new_loc(location, -1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
-      if location.to_s.split(//).last.to_i == 4
-        loc = new_loc(location, 1, 0)
-        if any_piece?(loc) && piece_color_at(loc) == :white
-          if @board_hash[loc].moved == 1
-            array << new_move(location, new_loc(location, 1, -1))
-          end
-        end
-        loc = new_loc(location, -1, 0)
-        if any_piece?(loc) && piece_color_at(loc) == :white
-          if @board_hash[loc].moved == 1
-            array << new_move(location, new_loc(location, -1, -1))
-          end
-        end
-      end
     end
     array.sort!
   end
@@ -344,6 +315,20 @@ class Board
       end
     end
     array = array.flatten.sort
+  end
+
+  def en_passant?(move)
+    #if start_location(move).to_s.split(//).last.to_i == 5
+  end
+
+  def move_en_passant(move)
+    move_piece(move)
+    loc = end_location(move)
+    if player == :white
+      board_hash[new_loc(loc, 0, -1)] = nil
+    else
+      board_hash[new_loc(loc, 0, 1)] = nil
+    end
   end
 
   def check?(player)

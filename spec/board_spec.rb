@@ -146,16 +146,6 @@ describe Board do
         end
       end
     end
-    context "pawn on fifth file" do
-      context "enemy pawn moves up 2" do
-        board = Board.new
-        board.board_hash[:f5] = Piece.new(:pawn, :white, :f5, 2)
-        board.board_hash[:e5] = Piece.new(:pawn, :black, :e5, 1)
-        it "returns the array ['f5f6', 'f5e6']" do
-          expect(board.array_of_legal_pawn_moves(:f5)).to eql(['f5f6', 'f5e6'].sort!)
-        end
-      end
-    end
     context ":black" do
       context "new board" do
         it "returns the array ['f7f6', 'f7f5']" do
@@ -168,16 +158,6 @@ describe Board do
         board.board_hash[:g6] = Piece.new(:pawn, :white, :g6, 3)
         it "returns the array ['f7f6', 'f7f5', 'f7g6', 'f7e6']" do
           expect(board.array_of_legal_pawn_moves(:f7)).to eql(['f7f6', 'f7f5', 'f7g6', 'f7e6'].sort!)
-        end
-      end
-    end
-    context "pawn on fifth file" do
-      context "enemy pawn moves up 2" do
-        board = Board.new
-        board.board_hash[:f4] = Piece.new(:pawn, :black, :f4, 2)
-        board.board_hash[:e4] = Piece.new(:pawn, :white, :e4, 1)
-        it "returns the array ['f4f3', 'f4e3']" do
-          expect(board.array_of_legal_pawn_moves(:f4)).to eql(['f4f3', 'f4e3'].sort!)
         end
       end
     end
