@@ -55,7 +55,7 @@ def init_game
     if game.board.en_passant?(move)
       game.board.move_en_passant(move)
     else
-      game.board.move_piece(game.player_move)
+      game.board.move_piece(move)
     end
     game.change_player
   end
