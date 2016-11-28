@@ -1,6 +1,12 @@
 require_relative 'piece'
 require_relative 'board'
 
+# TODO: Black can't capture other pawns but white can.
+# neither player can take en passant.
+# Tell players who turn it is.
+
+
+
 class Chess
   attr_accessor :board, :player
   def initialize
@@ -18,7 +24,7 @@ class Chess
     false
   end
   def player_move
-    puts "Where would you like to move?\nUse format 'a1b2'."
+    puts "#{@player}'s turn.\nWhere would you like to move?\nUse format 'a1b2'."
     loop do
       move = STDIN.gets.chomp
       unless valid_move?(move)
