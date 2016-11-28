@@ -52,7 +52,7 @@ def init_game
     end
     puts "#{game.player} is in check." if game.board.check?(game.player)
     move = game.player_move
-    if en_passant(move)
+    if game.board.en_passant?(move)
       game.board.move_en_passant(move)
     else
       game.board.move_piece(game.player_move)
@@ -61,4 +61,4 @@ def init_game
   end
 end
 
-#init_game
+init_game
