@@ -1,8 +1,9 @@
 require_relative 'piece'
 
 class Board
-  attr_accessor :board_hash
+  attr_accessor :board_hash, :turn
   def initialize
+    @turn = 1
     @board_hash = 
     {
     a1: Piece.new(:rook, :white, :a1),
@@ -316,11 +317,49 @@ class Board
     end
     array = array.flatten.sort
   end
-
-  def en_passant?(move)
-    #if start_location(move).to_s.split(//).last.to_i == 5
+  def white_en_passant?(move)
+    if start_location(move).to_s.split(//).last.to_i == 5
+      spot = new_loc(end_location(move), 0, -1)
+      if any_piece?(spot)
+        if piece_color_at(spot) == :black
+          if piece_type_at(spot) == :pawn
+            if piece_at(spot).moved == 1
+              if piece_at(spot).last_moved_on + 1 == @turn
+                return true
+              end
+            end
+          end
+        end
+      end
+    end
+    false
   end
 
+  def black_en_passant?(move)
+    if start_location(move).to_s.split(//).last.to_i == 4
+      spot = new_loc(end_location(move), 0, 1)
+      if any_piece?(spot)
+        if piece_color_at(spot) == :white
+          if piece_type_at(spot) == :pawn
+            if piece_at(spot).moved == 1
+              if piece_at(spot).last_moved_on + 1 == @turn
+                return true
+              end
+            end
+          end
+        end
+      end
+    end
+    false
+  end
+
+  def en_passant?(move)
+    return white_en_passant?(move) if @player == :white
+    return black_en_passant?(move) if @player == :black
+    nil
+  end
+
+  # execute an en passant move
   def move_en_passant(move)
     move_piece(move)
     loc = end_location(move)
