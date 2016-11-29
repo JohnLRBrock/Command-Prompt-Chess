@@ -61,4 +61,50 @@ describe Chess do
       end
     end
   end
+  describe "#hint?" do
+    context "a1b2" do
+      it "returns false" do
+        expect(@game.hint?('a1b2')).to eql(false)
+      end
+    end
+    context "hint a1" do
+      it "returns true" do
+        expect(@game.hint?('hint a1')).to eql(true)
+      end
+    end
+  end
+  describe "#hint_for" do
+    context ":a1" do
+      it "returns 'there are no moves for a1'" do
+        expect(@game.hint_for(:a1)).to eql('There are no moves for a1.')
+      end
+    end
+    context ":f2" do
+      it "returns '['f2f3', 'f2f4']'" do
+        expect(@game.hint_for(:f2)).to eql(['f2f3', 'f2f4'])
+      end
+    end
+    context ":a8" do
+      it "returns 'there are no moves for a8'" do
+        expect(@game.hint_for(:a8)).to eql('There are no moves for a8.')
+      end
+    end
+    context ":f7" do
+      it "returns '['f7f6', 'f7f5']'" do
+        expect(@game.hint_for(:f7)).to eql(['f7f5', 'f7f6'])
+      end
+    end
+    context ":c5" do
+      it "returns 'There is no piece at c5'" do
+        expect(@game.hint_for(:c5)).to eql('No piece at c5.')
+      end
+    end
+  end
+  describe "#extract_location" do
+    context "'hint a1'" do
+      it "returns :a1" do
+        expect(@game.extract_location('hint a1')).to eql(:a1)
+      end
+    end
+  end
 end

@@ -19,6 +19,7 @@ class Chess
   def initialize
     @board = Board.new
     @player = :white
+    @previous_board = @board
   end
   def valid_move?(move)
     if move.length == 4
@@ -94,6 +95,9 @@ class Chess
   def extract_location(input)
     input.split[1].to_sym
   end
+  def undo_move
+    @board = @previous_board
+  end
 end
 def init_game
   game = Chess.new
@@ -108,8 +112,10 @@ def init_game
     puts "#{game.player} is in check." if game.board.check?(game.player)
     move = game.player_move
     if game.board.en_passant?(move)
+      @previous_board = @board
       game.board.move_en_passant(move)
     else
+      @previous_board = @board
       game.board.move_piece(move)
     end
     game.change_player
