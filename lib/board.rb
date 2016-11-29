@@ -385,6 +385,8 @@ class Board
   end
 
   def check?(player)
+    array_of_all_moves_for(:black).each { |move| return true if piece_type_at(end_location(move)) == :king } if player == :white
+    array_of_all_moves_for(:white).each { |move| return true if piece_type_at(end_location(move)) == :king } if player == :black
     false
   end
 
