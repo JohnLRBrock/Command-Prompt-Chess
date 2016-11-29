@@ -34,7 +34,7 @@ class Chess
     loop do
       input = STDIN.gets.chomp
       if hint?(input)
-        puts hint_for(extract_location(input))
+        p hint_for(extract_location(input))
         redo
       end
       unless valid_move?(input)
@@ -56,13 +56,42 @@ class Chess
     @player = @player == :white ? :black : :white
   end
   def hint?(input)
-    false
+    return false unless input.length == 7
+    array = input.split
+    return false unless array.length == 2
+    return false unless array[0] == 'hint'
+    return false unless ('a'..'h').to_a.include?(array[1][0])
+    return false unless (1..8).to_a.include?(array[1][1].to_i)
+    true
   end
   def hint_for(loc)
-    'Not yet implemented'
+    return "No piece at #{loc}." unless @board.any_piece?(loc)
+    array = case @board.piece_type_at(loc)
+    when :pawn
+      moves = @board.array_of_legal_pawn_moves(loc)
+      if @board.piece_color_at(loc) == :white
+        move = @board.new_move(loc, @board.new_loc(loc, -1, 1))
+        moves << nmove if @board.white_en_passant?(move)
+        move = @board.new_move(loc, @board.new_loc(loc, 1, 1))
+        moves << move if @board.white_en_passant?(move)
+      else
+        move = @board.new_move(loc, @board.new_loc(loc, -1, -1))
+        moves << move if @board.black_en_passant?(move)
+        move = @board.new_move(loc, @board.new_loc(loc, 1, -1))
+        moves << move if @board.black_en_passant?(move)
+      end
+      moves
+    when :knight then @board.array_of_legal_knight_moves(loc)
+    when :rook then @board.array_of_legal_rook_moves(loc)
+    when :bishop then @board.array_of_legal_bishop_moves(loc)
+    when :queen then @board.array_of_legal_queen_moves(loc)
+    when :king then @board.array_of_legal_king_moves(loc)
+    end
+    return "There are no moves for #{loc}." if array.empty?
+    array
   end
   def extract_location(input)
-    nil
+    input.split[1].to_sym
   end
 end
 def init_game
