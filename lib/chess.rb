@@ -8,6 +8,7 @@ require_relative 'board'
 # g7f6 didn't
 # e7f6 worked
 # d5c4 didn't
+# Black en pasant f4g3 failed
 # neither player can take en passant.
 # Tell players who turn it is.
 
