@@ -120,6 +120,7 @@ def init_game
       break
     end
     puts "#{game.player} is in check." if game.board.check?(game.player)
+    p game.board.array_of_all_moves_for(game.player)
     move = game.player_move
     if game.board.en_passant?(move)
       @previous_board = @board

@@ -12,7 +12,7 @@ class Board
     d1: Piece.new(:queen, :white, :d1),
     e1: Piece.new(:king, :white, :e1),
     f1: Piece.new(:bishop, :white, :f1),
-    g1: Piece.new(:knight, :white, :d1),
+    g1: Piece.new(:knight, :white, :g1),
     h1: Piece.new(:rook, :white, :h1),
     a2: Piece.new(:pawn, :white, :a2),
     b2: Piece.new(:pawn, :white, :b2),
@@ -43,7 +43,7 @@ class Board
   def each(&block)
     8.downto(1) do |i|
       ('a'..'h').each do |j| 
-        yield(@board_hash[(i.to_s + j).to_sym])
+        yield(@board_hash[(j + i.to_s).to_sym])
       end
     end
   end
@@ -127,7 +127,7 @@ class Board
     location.to_sym
   end
 
-# TODO add en passante
+  # TODO add en passante
   def array_of_legal_pawn_moves(location)
     array = []
     if piece_color_at(location) == :white
