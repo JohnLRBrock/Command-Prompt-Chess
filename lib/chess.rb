@@ -10,7 +10,6 @@ require_relative 'board'
 # d5c4 didn't
 # Black en pasant f4g3 failed
 # neither player can take en passant.
-# Tell players who turn it is.
 
 
 
@@ -54,6 +53,16 @@ class Chess
       return input
     end
   end
+  def knight_or_queen
+    puts "Your pawn can be promoted. What would you like? (knight/queen)"
+    loop do
+      input = STDIN.gets.chomp
+      return :queen if input == 'queen'
+      return :knight if input == 'knight'
+      puts "What would you like? (knight/queen)"
+    end
+  end
+
   def change_player
     @player = @player == :white ? :black : :white
   end
@@ -99,6 +108,7 @@ class Chess
     @board = @previous_board
   end
 end
+
 def init_game
   game = Chess.new
   loop do
@@ -117,6 +127,7 @@ def init_game
     else
       @previous_board = @board
       game.board.move_piece(move)
+      game.board.promote(game.board.end_location(move), game.knight_or_queen) if game.board.promotion?(game.board.end_location(move))
     end
     game.change_player
   end

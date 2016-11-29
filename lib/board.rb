@@ -371,6 +371,19 @@ class Board
     end
   end
 
+  def promotion?(location)
+    return false unless piece_type_at(location) == :pawn
+    if piece_color_at(location) == :white
+      return false unless location.to_s.split(//).last.to_i == 8
+    else
+      return false unless location.to_s.split(//).last.to_i == 1
+    end
+    true
+  end
+  def promote(location, type)
+    @board_hash[location].type = type
+  end
+
   def check?(player)
     false
   end
