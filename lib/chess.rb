@@ -47,7 +47,7 @@ class Chess
         redo
       end
       unless @board.piece_color_at(@board.start_location(input)) == player
-        puts "That's not your peice to move."
+        puts "That's not your piece to move."
         redo
       end
       return input
@@ -159,4 +159,4 @@ def init_game
   end
 end
 
-#init_game
+init_game
