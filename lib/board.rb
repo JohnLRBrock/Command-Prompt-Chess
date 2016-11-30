@@ -142,7 +142,7 @@ class Board
       end
       # enemy piece on the diagnals?
       array << new_move(location, new_loc(location, 1, 1)) if any_piece?(new_loc(location, 1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
-      array << new_move(location, new_loc(location, -1, 1)) if any_piece?(new_loc(location, -1, 1)) && piece_color_at(new_loc(location, 1, 1)) == :black
+      array << new_move(location, new_loc(location, -1, 1)) if any_piece?(new_loc(location, -1, 1)) && piece_color_at(new_loc(location, -1, 1)) == :black
     # if the pawn being moved is black
     else
       unless any_piece?(new_loc(location, 0, -1))
@@ -152,7 +152,7 @@ class Board
         end
       end
       array << new_move(location, new_loc(location, 1, -1)) if any_piece?(new_loc(location, 1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
-      array << new_move(location, new_loc(location, -1, -1)) if any_piece?(new_loc(location, -1, -1)) && piece_color_at(new_loc(location, 1, -1)) == :white
+      array << new_move(location, new_loc(location, -1, -1)) if any_piece?(new_loc(location, -1, -1)) && piece_color_at(new_loc(location, -1, -1)) == :white
     end
     array.sort!
   end

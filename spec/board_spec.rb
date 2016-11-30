@@ -229,6 +229,28 @@ describe Board do
           end
         end
       end
+      context "move white pawn diagnally to the left" do
+        context "e5d6 with three moved pawns" do
+          board = Board.new
+          board.board_hash[:d2] = nil
+          board.board_hash[:d7] = nil
+          board.board_hash[:e7] = nil
+          board.board_hash[:d6] = Piece.new(:pawn, :black, :d6, 1, 4)
+          board.board_hash[:e5] = Piece.new(:pawn, :white, :e5, 2, 3)
+          it "returns true" do
+            expect(board.legal_pawn_move?('e5d6')).to eql(true)
+          end
+        end
+        context "black pawn at f3" do
+          context "g2f3" do
+            board = Board.new
+            board.board_hash[:f3] = Piece.new(:pawn, :black, :f3, 5)
+            it "returns true" do
+              expect(board.legal_pawn_move?('g2f3')).to eql(true)
+            end
+          end
+        end
+      end
     end
     context ":black pawn" do
       context "new board" do
@@ -617,15 +639,26 @@ describe Board do
         expect(@board.legal?('h2h4')).to eql(true)
       end
     end
-    context "e5d6 with three moved pawns" do
-      board = Board.new
-      board.board_hash[:d2] = nil
-      board.board_hash[:d7] = nil
-      board.board_hash[:e7] = nil
-      board.board_hash[:d6] = Piece.new(:pawn, :black, :d6, 1, 4)
-      board.board_hash[:e5] = Piece.new(:pawn, :white, :e5, 2, 3)
-      it "returns true" do
-        expect(board.legal?('e5d6')).to eql(true)
+    context "move white pawn diagnally to the left" do
+      context "e5d6 with three moved pawns" do
+        board = Board.new
+        board.board_hash[:d2] = nil
+        board.board_hash[:d7] = nil
+        board.board_hash[:e7] = nil
+        board.board_hash[:d6] = Piece.new(:pawn, :black, :d6, 1, 4)
+        board.board_hash[:e5] = Piece.new(:pawn, :white, :e5, 2, 3)
+        it "returns true" do
+          expect(board.legal?('e5d6')).to eql(true)
+        end
+      end
+      context "black pawn at f3" do
+        context "g2f3" do
+          board = Board.new
+          board.board_hash[:f3] = Piece.new(:pawn, :black, :f3, 5)
+          it "returns true" do
+            expect(board.legal?('g2f3')).to eql(true)
+          end
+        end
       end
     end
   end
