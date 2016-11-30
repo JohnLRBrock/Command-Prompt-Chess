@@ -634,11 +634,6 @@ describe Board do
         end
       end
     end
-    context "various legal moves" do
-      it "returns true if the move is legal" do
-        expect(@board.legal?('h2h4')).to eql(true)
-      end
-    end
     context "move white pawn diagnally to the left" do
       context "e5d6 with three moved pawns" do
         board = Board.new
@@ -659,6 +654,15 @@ describe Board do
             expect(board.legal?('g2f3')).to eql(true)
           end
         end
+      end
+    end
+    context "black takes white pawn en passant 'h4g3'" do
+      board = Board.new
+      board.turn = 3
+      board.board_hash[:h4] = Piece.new(:pawn, :black, :h4, 3)
+      board.board_hash[:g4] = Piece.new(:pawn, :white, :g4, 1, 2)
+      it "returns true" do
+        expect(board.legal?('h4g3')).to eql(true)
       end
     end
   end

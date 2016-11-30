@@ -82,7 +82,7 @@ class Chess
       moves = @board.array_of_legal_pawn_moves(loc)
       if @board.piece_color_at(loc) == :white
         move = @board.new_move(loc, @board.new_loc(loc, -1, 1))
-        moves << nmove if @board.white_en_passant?(move)
+        moves << move if @board.white_en_passant?(move)
         move = @board.new_move(loc, @board.new_loc(loc, 1, 1))
         moves << move if @board.white_en_passant?(move)
       else
