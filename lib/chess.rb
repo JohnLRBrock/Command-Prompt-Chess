@@ -108,6 +108,7 @@ class Chess
     @board = @previous_board
   end
   def mate?
+    return false  if @board.check?(@player)
     @previous_board = @board
     array = array_of_all_moves_for(@player)
     array.each  do |move|
