@@ -617,6 +617,17 @@ describe Board do
         expect(@board.legal?('h2h4')).to eql(true)
       end
     end
+    context "e5d6 with three moved pawns" do
+      board = Board.new
+      board.board_hash[:d2] = nil
+      board.board_hash[:d7] = nil
+      board.board_hash[:e7] = nil
+      board.board_hash[:d6] = Piece.new(:pawn, :black, :d6, 1, 4)
+      board.board_hash[:e5] = Piece.new(:pawn, :white, :e5, 2, 3)
+      it "returns true" do
+        expect(board.legal?('e5d6')).to eql(true)
+      end
+    end
   end
 
   describe "#check?" do
