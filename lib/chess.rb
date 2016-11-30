@@ -140,7 +140,7 @@ def init_game
     if game.board.en_passant?(move)
       @previous_board = @board
       game.board.move_en_passant(move)
-      if game.board.check?(player)
+      if game.board.check?(game.player)
         puts "After that move you would be in check. Move somewhere else."
         game.undo_move
         redo
@@ -149,7 +149,7 @@ def init_game
       @previous_board = @board
       game.board.move_piece(move)
       game.board.promote(game.board.end_location(move), game.knight_or_queen) if game.board.promotion?(game.board.end_location(move))
-      if game.board.check?(player)
+      if game.board.check?(game.player)
         puts "After that move you would be in check. Move somewhere else."
         game.undo_move
         redo
@@ -159,4 +159,4 @@ def init_game
   end
 end
 
-#init_game
+init_game
