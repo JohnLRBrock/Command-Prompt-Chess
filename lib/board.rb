@@ -127,7 +127,6 @@ class Board
     location.to_sym
   end
 
-  # TODO add en passante
   def array_of_legal_pawn_moves(location)
     array = []
     if piece_color_at(location) == :white
@@ -319,39 +318,25 @@ class Board
     array = array.flatten.sort
   end
   def white_en_passant?(move)
-    if start_location(move).to_s.split(//).last.to_i == 5
-      spot = new_loc(end_location(move), 0, -1)
-      if any_piece?(spot)
-        if piece_color_at(spot) == :black
-          if piece_type_at(spot) == :pawn
-            if piece_at(spot).moved == 1
-              if piece_at(spot).last_moved_on + 1 == @turn
-                return true
-              end
-            end
-          end
-        end
-      end
-    end
-    false
+    return false unless start_location(move).to_s.split(//).last.to_i == 5
+    spot = new_loc(end_location(move), 0, -1)
+    return false unless any_piece?(spot)
+    return false unless piece_color_at(spot) == :black
+    return false unless piece_type_at(spot) == :pawn
+    return false unless piece_at(spot).moved == 1
+    return false unless piece_at(spot).last_moved_on + 1 == @turn
+    true
   end
 
   def black_en_passant?(move)
-    if start_location(move).to_s.split(//).last.to_i == 4
-      spot = new_loc(end_location(move), 0, 1)
-      if any_piece?(spot)
-        if piece_color_at(spot) == :white
-          if piece_type_at(spot) == :pawn
-            if piece_at(spot).moved == 1
-              if piece_at(spot).last_moved_on + 1 == @turn
-                return true
-              end
-            end
-          end
-        end
-      end
-    end
-    false
+    return false unless start_location(move).to_s.split(//).last.to_i == 4
+    spot = new_loc(end_location(move), 0, 1)
+    return false unless any_piece?(spot)
+    return false unless piece_color_at(spot) == :white
+    return false unless piece_type_at(spot) == :pawn
+    return false unless piece_at(spot).moved == 1
+    return false unless piece_at(spot).last_moved_on + 1 == @turn
+    true
   end
 
   def en_passant?(move)
