@@ -107,6 +107,20 @@ class Chess
   def undo_move
     @board = @previous_board
   end
+  def mate?
+    @previous_board = @board
+    array = array_of_all_moves_for(@player)
+    array.each  do |move|
+      game.board.move_piece
+      if @board.check?
+        @board.undo_move
+      else
+        @board.undo_move
+        return false
+      end
+    end
+    true
+  end
 end
 
 def init_game
