@@ -46,6 +46,7 @@ class Chess
         undo_move
         redo
       end
+      break
     end
   end
   def knight_or_queen
@@ -142,4 +143,4 @@ def init_game
   end
 end
 
-#init_game
+init_game
