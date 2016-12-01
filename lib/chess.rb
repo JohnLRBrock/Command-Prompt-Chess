@@ -1,18 +1,6 @@
 require_relative 'piece'
 require_relative 'board'
 
-# TODO:Black pawns sometimes can't pature other pieces
-# black pawns can't take piece to the left 
-# a3b2 worked
-# h7g6 didn't
-# g7f6 didn't
-# e7f6 worked
-# d5c4 didn't
-# Black en pasant f4g3 failed
-# neither player can take en passant.
-
-
-
 class Chess
   attr_accessor :board, :player
   def initialize
@@ -42,15 +30,22 @@ class Chess
         puts "That's not a valid move."
         redo
       end
-      unless @board.legal?(input)
-        puts "That's not a legal move."
-        redo
-      end
       unless @board.piece_color_at(@board.start_location(input)) == player
         puts "That's not your piece to move."
         redo
       end
-      return input
+      unless @board.legal?(input)
+        puts "That's not a legal move."
+        redo
+      end
+      @previous_board = @board
+      @board.move_piece(input)
+      @board.promote(@board.end_location(input), knight_or_queen) if @board.promotion?(@board.end_location(input))
+      if @board.check?(@player)
+        puts "After that move you would be in check. Move somewhere else."
+        undo_move
+        redo
+      end
     end
   end
   def knight_or_queen
@@ -142,25 +137,7 @@ def init_game
     end
     puts "#{game.player} is in check." if game.board.check?(game.player)
     p game.board.array_of_all_moves_for(game.player)
-    move = game.player_move
-    if game.board.en_passant?(move)
-      @previous_board = @board
-      game.board.move_en_passant(move)
-      if game.board.check?(game.player)
-        puts "After that move you would be in check. Move somewhere else."
-        game.undo_move
-        redo
-      end
-    else
-      @previous_board = @board
-      game.board.move_piece(move)
-      game.board.promote(game.board.end_location(move), game.knight_or_queen) if game.board.promotion?(game.board.end_location(move))
-      if game.board.check?(game.player)
-        puts "After that move you would be in check. Move somewhere else."
-        game.undo_move
-        redo
-      end
-    end
+    game.player_move
     game.change_player
   end
 end

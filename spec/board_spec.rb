@@ -647,6 +647,7 @@ describe Board do
         board.board_hash[:e7] = nil
         board.board_hash[:d6] = Piece.new(:pawn, :black, :d6, 1, 4)
         board.board_hash[:e5] = Piece.new(:pawn, :white, :e5, 2, 3)
+        p board.array_of_legal_pawn_moves(:h4)
         it "returns true" do
           expect(board.legal?('e5d6')).to eql(true)
         end

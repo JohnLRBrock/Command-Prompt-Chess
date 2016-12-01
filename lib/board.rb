@@ -106,13 +106,17 @@ class Board
   end
 
   def move_piece(move)
-    start_loc = start_location(move)
-    end_loc = end_location(move)
-    @board_hash[end_loc] = @board_hash[start_loc]
-    @board_hash[start_loc] = nil
-    @board_hash[end_loc].location = end_loc
-    @board_hash[end_loc].moved += 1
-    @board_hash[end_loc].last_moved_on = @turn
+    if en_passant?(move)
+      move_en_passant(move)
+    else
+      start_loc = start_location(move)
+      end_loc = end_location(move)
+      @board_hash[end_loc] = @board_hash[start_loc]
+      @board_hash[start_loc] = nil
+      @board_hash[end_loc].location = end_loc
+      @board_hash[end_loc].moved += 1
+      @board_hash[end_loc].last_moved_on = @turn
+    end
   end
 
   def new_loc(location, x, y)
@@ -287,6 +291,7 @@ class Board
   def legal?(move)
     return false if @board_hash[start_location(move)] == nil
     return false if start_location(move) == end_location(move)
+    return true if en_passant?(move)
     case piece_type_at(start_location(move))
     when :pawn then return legal_pawn_move?(move)
     when :knight then return legal_knight_move?(move)
@@ -341,7 +346,7 @@ class Board
   def en_passant?(move)
     return white_en_passant?(move) if @player == :white
     return black_en_passant?(move) if @player == :black
-    nil
+    false
   end
 
   # execute an en passant move
