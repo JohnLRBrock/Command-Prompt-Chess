@@ -81,15 +81,21 @@ class Chess
     when :pawn
       moves = @board.array_of_legal_pawn_moves(loc)
       if @board.piece_color_at(loc) == :white
-        move = @board.new_move(loc, @board.new_loc(loc, -1, 1))
-        moves << move if @board.white_en_passant?(move)
-        move = @board.new_move(loc, @board.new_loc(loc, 1, 1))
-        moves << move if @board.white_en_passant?(move)
+        if @board.new_loc(loc, -1, 1)
+          move = @board.new_move(loc, @board.new_loc(loc, -1, 1))
+          moves << move if @board.white_en_passant?(move)
+        elsif @board.new_loc(loc, 1, 1)
+          move = @board.new_move(loc, @board.new_loc(loc, 1, 1))
+          moves << move if @board.white_en_passant?(move)
+        end
       else
-        move = @board.new_move(loc, @board.new_loc(loc, -1, -1))
-        moves << move if @board.black_en_passant?(move)
-        move = @board.new_move(loc, @board.new_loc(loc, 1, -1))
-        moves << move if @board.black_en_passant?(move)
+        if @board.new_loc(loc, -1, -1)
+          move = @board.new_move(loc, @board.new_loc(loc, -1, -1))
+          moves << move if @board.black_en_passant?(move)
+        elsif @board.new_loc(loc, 1, -1)
+         move = @board.new_move(loc, @board.new_loc(loc, 1, -1))
+         moves << move if @board.black_en_passant?(move)
+       end
       end
       moves
     when :knight then @board.array_of_legal_knight_moves(loc)
@@ -159,4 +165,4 @@ def init_game
   end
 end
 
-init_game
+#init_game

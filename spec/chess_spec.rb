@@ -99,6 +99,18 @@ describe Chess do
         expect(@game.hint_for(:c5)).to eql('No piece at c5.')
       end
     end
+    context "black with en passant possible at h4" do
+      game = Chess.new
+      game.board.turn = 3
+      game.board.board_hash[:h4] = Piece.new(:pawn, :black, :h4, 3)
+      game.board.board_hash[:g4] = Piece.new(:pawn, :white, :g4, 1, 2)
+      game.board.board_hash[:h3] = Piece.new(:pawn, :white, :h3, 1)
+      game.board.board_hash[:h2] = nil
+      game.board.board_hash[:g2] = nil
+      it "returns '['h4g3']'" do
+        expect(game.hint_for(:h4)).to eql(['h4g3'])
+      end
+    end
   end
   describe "#extract_location" do
     context "'hint a1'" do

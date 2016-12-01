@@ -129,6 +129,11 @@ describe Board do
         expect(@board.new_loc(:d4, 1, -5)).to eql(false)
       end
     end
+    context ":h4, 1, -1" do
+      it "returns false" do
+        expect(@board.new_loc(:h4, 1, -1)).to eql(false)
+      end
+    end
   end
   describe "#array_of_legal_pawn_moves" do
     context ":white" do
