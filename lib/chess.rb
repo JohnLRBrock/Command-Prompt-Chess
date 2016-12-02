@@ -21,7 +21,8 @@ class Chess
   def player_move
     puts "#{@player}'s turn.\nWhere would you like to move?\nUse format 'a1b2' or ask for a hint with 'hint a1'."
     loop do
-      input = STDIN.gets.chomp
+      #input = STDIN.gets.chomp
+      input = @board.array_of_all_moves_for(@player).sample
       if hint?(input)
         p hint_for(extract_location(input))
         redo

@@ -169,6 +169,7 @@ class Board
     color = piece_color_at(loc)
     1.upto(7) do |i|
       cursor = new_loc(loc, i * x , i * y)
+      # if the new location is off the board, cursor will be false.
       return array unless cursor
       if any_piece?(cursor)
         array << new_move(loc, cursor) unless piece_color_at(cursor) == color
@@ -177,6 +178,7 @@ class Board
         array << new_move(loc, cursor)
       end
     end
+    array
   end
 
   def knight_move(loc, x, y)
