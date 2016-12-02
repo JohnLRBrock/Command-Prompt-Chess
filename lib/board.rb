@@ -322,7 +322,7 @@ class Board
     array = array.flatten.sort
   end
   def white_en_passant?(move)
-    return false unless start_location(move).to_s.split(//).last.to_i == 5
+    return false unless start_location(move).to_s.split(//).last == '5'
     spot = new_loc(end_location(move), 0, -1)
     return false unless any_piece?(spot)
     return false unless piece_color_at(spot) == :black
@@ -333,7 +333,7 @@ class Board
   end
 
   def black_en_passant?(move)
-    return false unless start_location(move).to_s.split(//).last.to_i == 4
+    return false unless start_location(move).to_s.split(//).last == '4'
     spot = new_loc(end_location(move), 0, 1)
     return false unless any_piece?(spot)
     return false unless piece_color_at(spot) == :white
@@ -344,8 +344,8 @@ class Board
   end
 
   def en_passant?(move)
-    return white_en_passant?(move) if @player == :white
-    return black_en_passant?(move) if @player == :black
+    return white_en_passant?(move) if piece_color_at(start_location(move)) == :white
+    return black_en_passant?(move) if piece_color_at(start_location(move)) == :black
     false
   end
 
