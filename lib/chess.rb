@@ -131,6 +131,10 @@ def init_game
   game = Chess.new
   loop do
     puts game.board.to_s
+    if game.board.array_of_all_moves_for(game.player).empty?
+      puts "The game ends in a tie."
+      break
+    end
     if game.board.mate?(game.player)
       puts "#{game.player} is in checkmate!"
       game.change_player
