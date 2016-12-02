@@ -3,11 +3,13 @@ require_relative 'board'
 
 class Chess
   attr_accessor :board, :player
+
   def initialize
     @board = Board.new
     @player = :white
     @previous_board = @board
   end
+
   def valid_move?(move)
     if move.length == 4
       if (1..8).to_a.include?(move[1].to_i) && (1..8).to_a.include?(move[3].to_i)
@@ -18,11 +20,13 @@ class Chess
     end
     false
   end
+
   def player_move
     puts "#{@player}'s turn.\nWhere would you like to move?\nUse format 'a1b2' or ask for a hint with 'hint a1'."
     loop do
       #input = STDIN.gets.chomp
       input = @board.array_of_all_moves_for(@player).sample
+      puts input
       if hint?(input)
         p hint_for(extract_location(input))
         redo
@@ -50,6 +54,7 @@ class Chess
       break
     end
   end
+
   def knight_or_queen
     puts "Your pawn can be promoted. What would you like? (knight/queen)"
     loop do
@@ -63,6 +68,7 @@ class Chess
   def change_player
     @player = @player == :white ? :black : :white
   end
+
   def hint?(input)
     return false unless input.length == 7
     array = input.split
@@ -72,6 +78,7 @@ class Chess
     return false unless (1..8).to_a.include?(array[1][1].to_i)
     true
   end
+
   def hint_for(loc)
     return "No piece at #{loc}." unless @board.any_piece?(loc)
     array = case @board.piece_type_at(loc)
@@ -104,12 +111,15 @@ class Chess
     return "There are no moves for #{loc}." if array.empty?
     array
   end
+
   def extract_location(input)
     input.split[1].to_sym
   end
+
   def undo_move
     @board = @previous_board
   end
+  
   def mate?
     return false  if @board.check?(@player)
     @previous_board = @board
@@ -131,6 +141,16 @@ def init_game
   game = Chess.new
   loop do
     puts game.board.to_s
+    white_king_dead = true
+    black_king_dead = true
+    game.board.each do |piece|
+      white_king_dead = false if piece != nil && piece.type == :king && piece.player == :white
+      black_king_dead = false if piece != nil && piece.type == :king && piece.player == :black
+    end
+    if white_king_dead || black_king_dead
+      puts "One of the kings has died."
+      break
+    end
     if game.board.array_of_all_moves_for(game.player).empty?
       puts "The game ends in a tie."
       break

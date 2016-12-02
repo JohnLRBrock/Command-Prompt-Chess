@@ -1,5 +1,6 @@
 class Piece
   attr_accessor :type, :player, :location, :moved, :last_moved_on
+  
   def initialize(type, player, location, moved = 0, last_moved_on = 0)
     @type = type
     @player = player
@@ -7,6 +8,7 @@ class Piece
     @moved = moved
     @last_moved_on = last_moved_on
   end
+
   def to_s
     case @type
       when :pawn then return @player == :white ? "WP" : "BP"

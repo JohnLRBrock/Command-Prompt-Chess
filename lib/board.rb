@@ -2,6 +2,7 @@ require_relative 'piece'
 
 class Board
   attr_accessor :board_hash, :turn
+
   def initialize
     @turn = 1
     @board_hash = 
@@ -40,6 +41,7 @@ class Board
     h7: Piece.new(:pawn, :black, :h7)
     }
   end
+
   def each(&block)
     8.downto(1) do |i|
       ('a'..'h').each do |j| 
@@ -47,6 +49,7 @@ class Board
       end
     end
   end
+
   def to_s
     string = "\n\n"
     8.downto(1) do |numeral|
@@ -67,21 +70,26 @@ class Board
     string
   end
 
+
   def piece_at(location)
     @board_hash[location]
   end
+
   def piece_type_at(location)
     return board_hash[location].type if board_hash[location]
     nil
   end
+
   def piece_color_at(location)
     return board_hash[location].player if board_hash[location]
     nil
   end
+
   def piece_location_at(location)
     return board_hash[location].location if board_hash[location]
     nil
   end
+
   def piece_moved?(location)
     return true if @board_hash[location].moved > 0
     false    
@@ -90,6 +98,7 @@ class Board
   def any_piece?(location)
     @board_hash[location] ? true : false
   end
+
 
   # returns the first two characters in a move
   # example: given 'a1b2' returns :a1
@@ -104,6 +113,7 @@ class Board
   def new_move(start_location, end_location)
     start_location.to_s + end_location.to_s
   end
+
 
   def move_piece(move)
     if en_passant?(move)
@@ -129,6 +139,7 @@ class Board
     return false if number > 8 || number < 1
     new_location = (alpha_hash[alpha_index] + number.to_s).to_sym
   end
+
 
   def array_of_legal_pawn_moves(location)
     array = []
@@ -164,6 +175,8 @@ class Board
     return array_of_legal_pawn_moves(start_location(move)).include?(move)
   end
 
+  # returns an array of all the moves in a direction.
+  # x = 1 will go right. y = -1 will go down. Use both for diangals or 0 for only one direction.
   def x_or_y_moves(loc, x, y)
     array = []
     color = piece_color_at(loc)
@@ -323,6 +336,7 @@ class Board
     end
     array = array.flatten.sort
   end
+
   def white_en_passant?(move)
     return false unless start_location(move).to_s.split(//).last == '5'
     spot = new_loc(end_location(move), 0, -1)
@@ -371,6 +385,7 @@ class Board
     end
     true
   end
+  
   def promote(location, type)
     @board_hash[location].type = type
   end
