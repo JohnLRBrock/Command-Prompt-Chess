@@ -221,7 +221,7 @@ class Board
     array << x_or_y_moves(loc, 0, 1)
     array << x_or_y_moves(loc, -1, 0)
     array << x_or_y_moves(loc, 0, -1)
-    array.flatten!.sort!
+    array = array.flatten.sort
   end
 
   def legal_queen_move?(move)
@@ -234,7 +234,7 @@ class Board
     array << x_or_y_moves(loc, 1, -1)
     array << x_or_y_moves(loc, -1, 1)
     array << x_or_y_moves(loc, -1, -1)
-    array.flatten!.sort!
+    array = array.flatten.sort
   end
 
   def legal_bishop_move?(move)
@@ -247,7 +247,7 @@ class Board
     array << x_or_y_moves(loc, 0, 1)
     array << x_or_y_moves(loc, -1, 0)
     array << x_or_y_moves(loc, 0, -1)
-    array.flatten!.sort!
+    array = array.flatten.sort
   end
 
   def legal_rook_move?(move)

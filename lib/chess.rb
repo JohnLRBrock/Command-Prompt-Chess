@@ -143,4 +143,4 @@ def init_game
   end
 end
 
-#init_game
+init_game
